@@ -1,0 +1,15 @@
+dependencies:
+- name: infrastructure
+  repository: https://activiti.github.io/activiti-cloud-charts/
+  version: 1.1.5
+- name: application
+  repository: https://activiti.github.io/activiti-cloud-charts/
+  version: 1.1.6
+- name: activiti-cloud-modeling
+  repository: https://activiti.github.io/activiti-cloud-charts/
+  version: 1.1.6
+- name: activiti7-runtime-bundle-adhoc-process
+  repository: https://aleksl.github.io/activiti7-adhoc-process
+  version: 0.1.0
+digest: sha256:bcfb60caf6dc485de72a1c838324c117f913c127a25f4e0c04212c68e0d5b466
+generated: 2019-03-14T14:59:01.5053433+01:00
