@@ -11,5 +11,8 @@ dependencies:
 - name: activiti7-runtime-bundle-adhoc-process
   repository: https://aleksl.github.io/activiti7-adhoc-process
   version: 0.1.0
-digest: sha256:bcfb60caf6dc485de72a1c838324c117f913c127a25f4e0c04212c68e0d5b466
-generated: 2019-03-14T14:59:01.5053433+01:00
+- name: activiti7-cloud-connector-adhoc-process
+  repository: https://aleksl.github.io/activiti7-adhoc-process
+  version: 0.1.0
+digest: sha256:0b4a09f455d3144480ef9fc61ea2b8540d9e303e64eebb5a5fa96289dbcb3da1
+generated: 2019-03-15T10:52:24.326451+01:00

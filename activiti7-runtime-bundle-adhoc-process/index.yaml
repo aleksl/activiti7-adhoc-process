@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  activiti7-runtime-bundle-adhoc-process:
+  - apiVersion: v1
+    created: 2019-03-15T11:05:00.6128831+01:00
+    description: A Helm chart for Kubernetes
+    digest: 6ece59018bd541f93915b496ee264a556ec08ec0dd605761c6798c9739bf7dba
+    icon: https://raw.githubusercontent.com/jenkins-x/jenkins-x-platform/master/images/java.png
+    name: activiti7-runtime-bundle-adhoc-process
+    urls:
+    - https://aleksl.github.io/activiti7-adhoc-process/activiti7-runtime-bundle-adhoc-process-0.1.0.tgz
+    version: 0.1.0
+generated: 2019-03-15T11:05:00.611878+01:00

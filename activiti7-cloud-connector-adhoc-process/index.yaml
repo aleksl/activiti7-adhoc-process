@@ -2,12 +2,12 @@ apiVersion: v1
 entries:
   activiti7-cloud-connector-adhoc-process:
   - apiVersion: v1
-    created: 2019-03-15T10:51:17.6850914+01:00
+    created: 2019-03-15T11:04:46.2530917+01:00
     description: A Helm chart for Kubernetes
-    digest: a6d7f9a145c86e5a844b98b40e9750ef316df967acbb9053d15bc6a0e0e89cba
+    digest: 08b9d7a1eae7543ba5649a84f91819e3aeac501e77cbfc71d2dcb9988ab86226
     icon: https://raw.githubusercontent.com/jenkins-x/jenkins-x-platform/master/images/java.png
     name: activiti7-cloud-connector-adhoc-process
     urls:
     - https://aleksl.github.io/activiti7-adhoc-process/activiti7-cloud-connector-adhoc-process-0.1.0.tgz
     version: 0.1.0
-generated: 2019-03-15T10:51:17.6830945+01:00
+generated: 2019-03-15T11:04:46.2510929+01:00

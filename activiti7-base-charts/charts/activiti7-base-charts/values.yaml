@@ -81,6 +81,22 @@ activiti-cloud-modeling:
       annotations: {}
 
 application:
+  activiti7-cloud-connector-adhoc-process:
+    image:
+      repository: activiti7-cloud-connector-adhoc-process
+      tag: 0.0.1
+      pullPolicy: IfNotPresent
+    service:
+      name: activiti7-cc-adhoc-process
+  
+  activiti7-runtime-bundle-adhoc-process:
+    image:
+      repository: activiti7-runtime-bundle-adhoc-process
+      tag: 0.0.1
+      pullPolicy: IfNotPresent
+    service:
+      name: activiti7-rb-adhoc-process
+
   runtime-bundle:
     enabled: false
     service: 
