@@ -17,12 +17,10 @@ global:
       type: http
       port: 80
     realm: ""
-    resource: ""
   ## The list of hostnames to be covered with this ingress record.
   ## Most likely this will be just one host, but in the event more hosts are needed, this is an array
-  gateway:
-    host: ""
-
+  ingress:
+    hostName: ""
 db:
   uri: ""
   name: activitipostgresql
@@ -32,19 +30,6 @@ db:
 activitipostgresql:
    postgresPassword: activiti
 
-postgres:
-  enable: false
-  name: postgres
-  port: 5432
-  username: postgres
-  password:
-  
-init:
-  image:
-    repository: alpine
-    tag: 3.8
-    pullPolicy: IfNotPresent
-
 ## Allows the specification of additional environment variables
 extraEnv: |
   # - name: ACT_KEYCLOAK_URL
@@ -53,15 +38,10 @@ extraEnv: |
   #       name: {{ .Release.Name }}-keycloak-http
   #       key: expose-keycloak-service-key
 
-## Additional init containers, e. g. to wait for a db or SSO
-extraInitContainers: |
-
 javaOpts:
   xmx: 768m
   xms: 512m
   other: -XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90
-# only set this variable if a private registry secret is needed to pull the image
-#registryPullSecrets: private-registry-secret
 image:
   repository: activiti7-runtime-bundle-adhoc-process
   tag: 0.0.1
@@ -71,8 +51,10 @@ service:
   type: ClusterIP
   externalPort: 80
   internalPort: 8080
+  labels: {}
   annotations:
-    fabric8.io/expose: "false"
+    fabric8.io/expose: "true"
+    fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
 resources:
   limits:
     memory: 768Mi
@@ -81,17 +63,15 @@ resources:
     memory: 768Mi
 probePath: /actuator/health
 livenessProbe:
-  initialDelaySeconds: 60
+  initialDelaySeconds: 140
   periodSeconds: 15
-  timeoutSeconds: 4
-  successThreshold: 1
-  failureThreshold: 4
+  timeoutSeconds: 20
+  failureThreshold: 40
 readinessProbe:
-  initialDelaySeconds: 20
-  periodSeconds: 15
-  timeoutSeconds: 3
-  successThreshold: 1
-  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 5
+  timeoutSeconds: 10
+  failureThreshold: 80
 terminationGracePeriodSeconds: 20
 
 
@@ -99,30 +79,8 @@ ingress:
   ## Set to true to enable ingress record generation
   enabled: false
 
-  path: /activiti7-rb-adhoc-process
-
-  ## Set this to override global.gateway.host name
-  hostName: 
-
-  ## Set this to true in order to enable TLS on the ingress record
-  tls: false
-
-  ## If TLS is set to true, you must declare what secret will store the key/certificate for TLS
-  tlsSecret: myTlsSecret
-
-  ## Ingress annotations done as key:value pairs
-  annotations: 
-        kubernetes.io/ingress.class: nginx
-        nginx.ingress.kubernetes.io/enable-cors: "true"
-        nginx.ingress.kubernetes.io/cors-allow-headers: "*"
-        nginx.ingress.kubernetes.io/x-forwarded-prefix: "true"
-
 #only needed when using sck8s
 rbac:
   create: true
 serviceAccount:
   create: true
-
-## Add additional volumes and mounts
-extraVolumes: |
-extraVolumeMounts: |
