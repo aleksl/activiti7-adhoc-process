@@ -5,6 +5,9 @@ dependencies:
 - name: activiti7-cloud-connector-adhoc-process
   repository: https://aleksl.github.io/activiti7-adhoc-process
   version: 0.1.0
+- name: common
+  repository: https://activiti.github.io/activiti-cloud-charts/
+  version: 1.1.2
 - name: infrastructure
   repository: https://activiti.github.io/activiti-cloud-charts/
   version: 1.1.5
@@ -14,5 +17,5 @@ dependencies:
 - name: activiti-cloud-modeling
   repository: https://activiti.github.io/activiti-cloud-charts/
   version: 1.1.6
-digest: sha256:253af18964b899a9e9e4f0e27b0aa93290d2043d44a7b1969a5941debb25477e
-generated: 2019-03-15T11:31:44.45259+01:00
+digest: sha256:1d24d37c94c4f83e262641da7d25ce1e1a134a1703be89428cc68f5e66d898c2
+generated: 2019-03-15T11:51:01.8671266+01:00
