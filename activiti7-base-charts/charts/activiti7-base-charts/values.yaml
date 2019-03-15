@@ -65,19 +65,19 @@ global:
 
 activiti7-runtime-bundle-adhoc-process:
   image:
-    repository: activiti7-adhoc-process/activiti7-runtime-bundle-adhoc-process
+    repository: activiti7-runtime-bundle-adhoc-process
     tag: 0.0.1
     pullPolicy: Always
   service:
-    name: activiti7-rb-adhoc-process
+    name: activiti7-runtime-bundle-adhoc-process
 
 activiti7-cloud-connector-adhoc-process:
   image:
-    repository: activiti7-adhoc-process/activiti7-cloud-connector-adhoc-process
+    repository: activiti7-cloud-connector-adhoc-process
     tag: 0.0.1
     pullPolicy: Always
   service:
-    name: activiti7-cc-adhoc-process
+    name: activiti7-cloud-connector-adhoc-process
 
 activiti-cloud-modeling:
   enabled: true
