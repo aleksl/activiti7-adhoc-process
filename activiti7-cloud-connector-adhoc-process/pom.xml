@@ -10,13 +10,25 @@
 	</parent>
 	<groupId>pl.aleksl.activiti</groupId>
 	<artifactId>activiti7-cloud-connector-adhoc-process</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>activiti7-cloud-connector-adhoc-process</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.activiti.cloud.dependencies</groupId>
+				<artifactId>activiti-cloud-dependencies</artifactId>
+				<version>7.0.0.SR1</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -29,6 +41,27 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.activiti.cloud.connector</groupId>
+			<artifactId>activiti-cloud-starter-connector</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-config-client</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-server</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.activiti.cloud.common</groupId>
+			<artifactId>activiti-cloud-services-common-security-keycloak</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -36,6 +69,38 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.26.1</version>
+				<configuration>
+					<images>
+						<image>
+							<alias>activiti7-cc-adhoc-process</alias>
+							<name>activiti7-cloud-connector-adhoc-process:${project.version}</name>
+							<build>
+								<dockerFileDir>${project.basedir}</dockerFileDir>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>registry</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

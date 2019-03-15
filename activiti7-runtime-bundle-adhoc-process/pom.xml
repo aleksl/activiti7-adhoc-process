@@ -65,7 +65,7 @@
 				<configuration>
 					<images>
 						<image>
-							<alias>activiti7-adhoc-process</alias>
+							<alias>activiti7-rb-adhoc-process</alias>
 							<name>activiti7-runtime-bundle-adhoc-process:${project.version}</name>
 							<build>
 								<dockerFileDir>${project.basedir}</dockerFileDir>

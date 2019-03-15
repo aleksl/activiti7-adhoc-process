@@ -1,91 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
-  <bpmn2:process id="process-8a8180e5697bcbcc01697c4d9ad90001" name="Adhoc" isExecutable="true">
-    <bpmn2:documentation>Ad-hoc example process</bpmn2:documentation>
-    <bpmn2:startEvent id="StartEvent_1">
-      <bpmn2:outgoing>SequenceFlow_15aahla</bpmn2:outgoing>
-    </bpmn2:startEvent>
-    <bpmn2:userTask id="UserTask_19s80dm" name="Adhoc request">
-      <bpmn2:incoming>SequenceFlow_15aahla</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_0wjrzs7</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_1m0d652</bpmn2:outgoing>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_15aahla" sourceRef="StartEvent_1" targetRef="UserTask_19s80dm" />
-    <bpmn2:userTask id="UserTask_0372osl" name="Adhoc accept">
-      <bpmn2:incoming>SequenceFlow_1m0d652</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_1li8u96</bpmn2:outgoing>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_1m0d652" sourceRef="UserTask_19s80dm" targetRef="UserTask_0372osl" />
-    <bpmn2:exclusiveGateway id="ExclusiveGateway_0v3vovv">
-      <bpmn2:incoming>SequenceFlow_1li8u96</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_0wjrzs7</bpmn2:outgoing>
-      <bpmn2:outgoing>SequenceFlow_0cswczt</bpmn2:outgoing>
-    </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_1li8u96" sourceRef="UserTask_0372osl" targetRef="ExclusiveGateway_0v3vovv" />
-    <bpmn2:sequenceFlow id="SequenceFlow_0wjrzs7" name="Reject" sourceRef="ExclusiveGateway_0v3vovv" targetRef="UserTask_19s80dm">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">&lt;![CDATA[${!acceptAdhoc}]]&gt;</bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
-    <bpmn2:endEvent id="EndEvent_0ko31f5">
-      <bpmn2:incoming>SequenceFlow_087p21z</bpmn2:incoming>
-    </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_0cswczt" sourceRef="ExclusiveGateway_0v3vovv" targetRef="ServiceTask_0doao4d">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">&lt;![CDATA[${acceptAdhoc}]]&gt;</bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
-    <bpmn2:serviceTask id="ServiceTask_0doao4d" name="Adhoc service" implementation="AdhocServiceImpl">
-      <bpmn2:incoming>SequenceFlow_0cswczt</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_087p21z</bpmn2:outgoing>
-    </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_087p21z" sourceRef="ServiceTask_0doao4d" targetRef="EndEvent_0ko31f5" />
-  </bpmn2:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process-8a8180e5697bcbcc01697c4d9ad90001">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="154" y="97" width="36" height="36" />
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <process id="process-8a8180fb697c94f501697cab318e0001" name="Adhoc" isExecutable="true">
+    <documentation>Ad-hoc example process</documentation>
+    <startEvent id="StartEvent_1" />
+    <userTask id="UserTask_19s80dm" name="Adhoc request" activiti:assignee="${assigneeRequest}" />
+    <sequenceFlow id="SequenceFlow_15aahla" sourceRef="StartEvent_1" targetRef="UserTask_19s80dm" />
+    <userTask id="UserTask_0372osl" name="Adhoc accept" activiti:assignee="${assigneeAccept}" />
+    <sequenceFlow id="SequenceFlow_1m0d652" sourceRef="UserTask_19s80dm" targetRef="UserTask_0372osl" />
+    <exclusiveGateway id="ExclusiveGateway_0v3vovv" />
+    <sequenceFlow id="SequenceFlow_1li8u96" sourceRef="UserTask_0372osl" targetRef="ExclusiveGateway_0v3vovv" />
+    <sequenceFlow id="SequenceFlow_0wjrzs7" name="Reject" sourceRef="ExclusiveGateway_0v3vovv" targetRef="UserTask_19s80dm">
+      <conditionExpression xsi:type="tFormalExpression">${!acceptAdhoc}</conditionExpression>
+    </sequenceFlow>
+    <endEvent id="EndEvent_0ko31f5" />
+    <sequenceFlow id="SequenceFlow_0cswczt" sourceRef="ExclusiveGateway_0v3vovv" targetRef="ServiceTask_0doao4d">
+      <conditionExpression xsi:type="tFormalExpression">${acceptAdhoc}</conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="ServiceTask_0doao4d" name="Adhoc service" implementation="AdhocServiceImpl" />
+    <sequenceFlow id="SequenceFlow_087p21z" sourceRef="ServiceTask_0doao4d" targetRef="EndEvent_0ko31f5" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process-8a8180fb697c94f501697cab318e0001">
+    <bpmndi:BPMNPlane id="BPMNPlane_process-8a8180fb697c94f501697cab318e0001" bpmnElement="process-8a8180fb697c94f501697cab318e0001">
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
+        <omgdc:Bounds x="154" y="97" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_19s80dm_di" bpmnElement="UserTask_19s80dm">
-        <dc:Bounds x="281" y="75" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_19s80dm" bpmnElement="UserTask_19s80dm">
+        <omgdc:Bounds x="281" y="75" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_15aahla_di" bpmnElement="SequenceFlow_15aahla">
-        <di:waypoint x="190" y="115" />
-        <di:waypoint x="281" y="115" />
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_0372osl" bpmnElement="UserTask_0372osl">
+        <omgdc:Bounds x="449" y="75" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_0v3vovv" bpmnElement="ExclusiveGateway_0v3vovv" isMarkerVisible="true">
+        <omgdc:Bounds x="596" y="-15" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_0ko31f5" bpmnElement="EndEvent_0ko31f5">
+        <omgdc:Bounds x="848" y="-8" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_0doao4d" bpmnElement="ServiceTask_0doao4d">
+        <omgdc:Bounds x="693" y="-30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15aahla" bpmnElement="SequenceFlow_15aahla">
+        <omgdi:waypoint x="190" y="115" />
+        <omgdi:waypoint x="281" y="115" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="UserTask_0372osl_di" bpmnElement="UserTask_0372osl">
-        <dc:Bounds x="449" y="75" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1m0d652_di" bpmnElement="SequenceFlow_1m0d652">
-        <di:waypoint x="381" y="115" />
-        <di:waypoint x="449" y="115" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1m0d652" bpmnElement="SequenceFlow_1m0d652">
+        <omgdi:waypoint x="381" y="115" />
+        <omgdi:waypoint x="449" y="115" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ExclusiveGateway_0v3vovv_di" bpmnElement="ExclusiveGateway_0v3vovv" isMarkerVisible="true">
-        <dc:Bounds x="596" y="-15" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1li8u96_di" bpmnElement="SequenceFlow_1li8u96">
-        <di:waypoint x="549" y="115" />
-        <di:waypoint x="621" y="115" />
-        <di:waypoint x="621" y="35" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1li8u96" bpmnElement="SequenceFlow_1li8u96">
+        <omgdi:waypoint x="549" y="115" />
+        <omgdi:waypoint x="621" y="115" />
+        <omgdi:waypoint x="621" y="35" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_0wjrzs7_di" bpmnElement="SequenceFlow_0wjrzs7">
-        <di:waypoint x="596" y="10" />
-        <di:waypoint x="331" y="10" />
-        <di:waypoint x="331" y="75" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_0wjrzs7" bpmnElement="SequenceFlow_0wjrzs7">
+        <omgdi:waypoint x="596" y="10" />
+        <omgdi:waypoint x="331" y="10" />
+        <omgdi:waypoint x="331" y="75" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="447" y="-8" width="33" height="14" />
+          <omgdc:Bounds x="447" y="-8" width="33" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_0ko31f5_di" bpmnElement="EndEvent_0ko31f5">
-        <dc:Bounds x="848" y="-8" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0cswczt_di" bpmnElement="SequenceFlow_0cswczt">
-        <di:waypoint x="646" y="10" />
-        <di:waypoint x="693" y="10" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_0cswczt" bpmnElement="SequenceFlow_0cswczt">
+        <omgdi:waypoint x="646" y="10" />
+        <omgdi:waypoint x="693" y="10" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_0doao4d_di" bpmnElement="ServiceTask_0doao4d">
-        <dc:Bounds x="693" y="-30" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_087p21z_di" bpmnElement="SequenceFlow_087p21z">
-        <di:waypoint x="793" y="10" />
-        <di:waypoint x="848" y="10" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_087p21z" bpmnElement="SequenceFlow_087p21z">
+        <omgdi:waypoint x="793" y="10" />
+        <omgdi:waypoint x="848" y="10" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-</bpmn2:definitions>
+</definitions>
