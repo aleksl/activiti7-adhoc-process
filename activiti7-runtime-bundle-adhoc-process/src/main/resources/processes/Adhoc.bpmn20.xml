@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
-  <process id="process-8a8180fb697c94f501697cab318e0001" name="Adhoc" isExecutable="true">
+  <process id="process-adhoc" name="Adhoc" isExecutable="true">
     <documentation>Ad-hoc example process</documentation>
     <startEvent id="StartEvent_1" />
     <userTask id="UserTask_19s80dm" name="Adhoc request" activiti:assignee="${assigneeRequest}" />
@@ -16,11 +16,11 @@
     <sequenceFlow id="SequenceFlow_0cswczt" sourceRef="ExclusiveGateway_0v3vovv" targetRef="ServiceTask_0doao4d">
       <conditionExpression xsi:type="tFormalExpression">${acceptAdhoc}</conditionExpression>
     </sequenceFlow>
-    <serviceTask id="ServiceTask_0doao4d" name="Adhoc service" implementation="AdhocServiceImpl" />
+    <serviceTask id="ServiceTask_0doao4d" name="Adhoc service" implementation="Adhoc Service Impl" />
     <sequenceFlow id="SequenceFlow_087p21z" sourceRef="ServiceTask_0doao4d" targetRef="EndEvent_0ko31f5" />
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_process-8a8180fb697c94f501697cab318e0001">
-    <bpmndi:BPMNPlane id="BPMNPlane_process-8a8180fb697c94f501697cab318e0001" bpmnElement="process-8a8180fb697c94f501697cab318e0001">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process-8a818196698ffd940169905602690001">
+    <bpmndi:BPMNPlane id="BPMNPlane_process-8a818196698ffd940169905602690001" bpmnElement="process-8a818196698ffd940169905602690001">
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
         <omgdc:Bounds x="154" y="97" width="36" height="36" />
       </bpmndi:BPMNShape>

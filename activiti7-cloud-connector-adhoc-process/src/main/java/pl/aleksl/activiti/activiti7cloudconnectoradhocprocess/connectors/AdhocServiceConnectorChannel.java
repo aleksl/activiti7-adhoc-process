@@ -4,9 +4,9 @@ import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
 
 public interface AdhocServiceConnectorChannel {
-    String ADHOC_SERVICE_CONNECTOR_CHANNEL = "AdhocServiceConnectorChannel";
+    String ADHOC_SERVICE_CONNECTOR_CHANNEL = "adhocServiceConnectorChannel";
 
     @Input(ADHOC_SERVICE_CONNECTOR_CHANNEL)
-    SubscribableChannel adhocServiceConnectorrConsumer();
+    SubscribableChannel adhocServiceConnectorChannel();
 
 }
