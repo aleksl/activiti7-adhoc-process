@@ -4,7 +4,10 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
     draft: {{ default "draft-app" .Values.draft }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
@@ -12,11 +15,36 @@ spec:
       labels:
         draft: {{ default "draft-app" .Values.draft }}
         app: {{ template "fullname" . }}
+        release: {{ .Release.Name }}
 {{- if .Values.podAnnotations }}
       annotations:
 {{ toYaml .Values.podAnnotations | indent 8 }}
 {{- end }}
     spec:
+{{- if include "common.registry-pull-secrets" . }}
+      imagePullSecrets:
+      {{- include "common.registry-pull-secrets" . | indent 6 }}
+{{- end }}
+    {{- if or .Values.postgres.enable .Values.extraInitContainers }}
+      initContainers:
+      {{- if .Values.postgres.enable }}
+        - name: wait-for-postgresql
+          image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - |
+              until printf "." && nc -z -w 2 {{ .Release.Name }}-{{ .Values.postgres.name }} {{ .Values.postgres.port }}; do
+                  sleep 2;
+              done;
+
+              echo 'PostgreSQL OK ✓'
+      {{- end }}
+      {{- if .Values.extraInitContainers }}
+{{ tpl .Values.extraInitContainers . | indent 8 }}
+      {{- end }}
+    {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -32,48 +60,81 @@ spec:
 {{- end }}
         - name: SPRING_RABBITMQ_HOST
         {{- if .Values.global.rabbitmq.host.value }}
-          value: "{{ .Values.global.rabbitmq.host.value }}"
-        {{ else }}
+          value: {{ .Values.global.rabbitmq.host.value | quote }}
+        {{- else }}
           value: "{{ .Release.Name }}-rabbitmq"
-        {{ end }}
-        - name: SPRING_RABBITMQ_USERNAME
-          value: {{ .Values.global.rabbitmq.username.value }}
-        - name: SPRING_RABBITMQ_HOST
-{{- if .Values.global.rabbitmq.host.value }}
-          value: "{{ .Values.global.rabbitmq.host.value }}"
-{{- else }}
-          value: "{{ .Release.Name }}-rabbitmq"
-{{- end }}
+        {{- end }}
         - name: SPRING_RABBITMQ_USERNAME
           value: {{ .Values.global.rabbitmq.username.value }}
         - name: SPRING_RABBITMQ_PASSWORD
           value: {{ .Values.global.rabbitmq.password.value }}
-{{- if .Values.global.keycloak.url }}
+        {{- if include "common.keycloak-enabled" $ }}
         - name: ACT_KEYCLOAK_URL
-          value: "{{ .Values.global.keycloak.url }}"
-{{- end }}
-{{- if .Values.db.deployPostgres }}
+          value: {{ include "common.keycloak-url" $ | quote }}
+        {{- end }}
+        {{- if include "common.keycloak-realm" . }}
+        - name: ACT_KEYCLOAK_REALM
+          value: {{ include "common.keycloak-realm" . | quote }}
+        {{- end }}
+        {{- if include "common.keycloak-resource" .  }}
+        - name: ACT_KEYCLOAK_RESOURCE
+          value: {{ include "common.keycloak-resource" . | quote }}
+        {{- end }}
+{{- if .Values.postgres.enable }}
         - name: SPRING_DATASOURCE_URL
-  {{- if .Values.db.uri }}
-          value: "{{ .Values.db.uri }}"
-  {{- else }}
-          value: "jdbc:postgresql://{{ .Release.Name }}-{{ .Values.db.name }}:{{ .Values.db.port }}/postgres"
-  {{- end }}
+          {{- if .Values.postgres.uri }}
+          value: {{ .Values.postgres.uri | quote }}
+          {{- else }}
+          value: "jdbc:postgresql://{{ .Release.Name }}-{{ .Values.postgres.name }}:{{ .Values.postgres.port }}/postgres"
+          {{- end }}
         - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-          value: {{ default "org.postgresql.Driver" .Values.db.driver }}
+          value: {{ default "org.postgresql.Driver" .Values.postgres.driver | quote }}
         - name: SPRING_DATASOURCE_USERNAME
-          value: {{ default "postgres" .Values.db.user }}
+          value: {{ default "postgres" .Values.postgres.username | quote }}
         - name: SPRING_DATASOURCE_PASSWORD
-  {{- if .Values.db.pass }}
-          value: "{{ .Values.db.pass }}"
-  {{ else }}
+          {{- if .Values.postgres.password }}
+          value: {{ .Values.db.password | quote }}
+          {{- else }}
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-{{ .Values.db.name }}
-              key: postgres-password
-  {{- end }}
+              name: {{ .Release.Name }}-{{ .Values.postgres.name }}
+              key: postgresql-password
+          {{- end }}
         - name: SPRING_JPA_DATABASE_PLATFORM
-          value: {{ default "org.hibernate.dialect.PostgreSQLDialect" .Values.db.platform }}
+          value: {{ default "org.hibernate.dialect.PostgreSQLDialect" .Values.postgres.platform | quote }}
+        - name: SPRING_JPA_GENERATE_DDL
+          value: {{ default  "true"  .Values.postgres.generateDdl | quote }}
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: {{ default "update"  .Values.postgres.ddlAuto | quote}}
+{{- else }}
+          {{- if .Values.db.uri }}
+        - name: SPRING_DATASOURCE_URL
+          value: {{ .Values.db.uri | quote }} 
+          {{- end }}
+          {{- if .Values.db.driver }}
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          value: {{ .Values.db.driver | quote }} 
+          {{- end }}
+          {{- if .Values.db.username }}
+        - name: SPRING_DATASOURCE_USERNAME
+          value: {{ .Values.db.username | quote }} 
+          {{- end }}
+          {{- if .Values.db.password}}
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: {{ .Values.db.password | quote}} 
+          {{- end }}
+          {{- if .Values.db.platform}}
+        - name: SPRING_JPA_DATABASE_PLATFORM
+          value: {{ .Values.db.platform | quote}} 
+          {{- end }}
+          {{- if .Values.db.generateDdl}}
+        - name: SPRING_JPA_GENERATE_DDL
+          value: {{ .Values.db.generateDdl | quote }} 
+          {{- end }}
+          {{- if .Values.db.ddlAuto}}
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: {{ default "update"  .Values.db.ddlAuto | quote }} 
+          {{- end }}
 {{- end }}
         - name: EUREKA_CLIENT_ENABLED
           value: "false"
@@ -83,14 +144,12 @@ spec:
           value: "false"
         - name: ACT_CLOUD_CONFIG_SERVER_ENABLED
           value: "false"
-{{- with .Values.extraEnv }}
-{{ tpl . $ | indent 8 }}
-{{- end }}
+{{ include "common.extra-env" . | indent 8 }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.probePath }}
+            path: {{ tpl .Values.probePath . }}
             port: {{ .Values.service.internalPort }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -99,15 +158,27 @@ spec:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.probePath }}
+            path: {{ tpl .Values.probePath . }}
             port: {{ .Values.service.internalPort }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
+{{- if .Values.extraVolumeMounts }}
+        volumeMounts:
+{{- with .Values.extraVolumeMounts }}
+{{ tpl . $ | indent 10 }}
+{{- end }}
+{{- end }}
+{{- if .Values.extraVolumes }}
+      volumes:
+{{- with .Values.extraVolumes }}
+{{ tpl . $ | indent 8 }}
+{{- end }}
+{{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
 {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.service.name }}

@@ -1,6 +1,6 @@
 dependencies:
-- name: postgresql
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 0.11.0
-digest: sha256:bb64d7673beb2b6fe153dea737534e2753b97a3f3b83b342f7d8360a43d1e670
-generated: 2019-02-01T11:18:25.511436+02:00
+- name: common
+  repository: https://activiti.github.io/activiti-cloud-charts/
+  version: 1.1.2
+digest: sha256:6fba08d51a130dba521123d111db4718ad096e20319e61d0596357ac26f559c8
+generated: 2019-03-05T17:25:18.493337Z
