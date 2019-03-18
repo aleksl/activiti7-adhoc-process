@@ -83,9 +83,9 @@ ingress:
 
 #only needed when using sck8s
 rbac:
-  create: true
+  create: false
 serviceAccount:
-  create: true
+  create: false
 
 ## Add additional volumes and mounts
 extraVolumes: |
