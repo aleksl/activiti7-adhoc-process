@@ -4,7 +4,10 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
     draft: {{ default "draft-app" .Values.draft }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
@@ -12,11 +15,16 @@ spec:
       labels:
         draft: {{ default "draft-app" .Values.draft }}
         app: {{ template "fullname" . }}
+        release: {{ .Release.Name }}
 {{- if .Values.podAnnotations }}
       annotations:
 {{ toYaml .Values.podAnnotations | indent 8 }}
 {{- end }}
     spec:
+{{- if include "common.registry-pull-secrets" . }}
+      imagePullSecrets:
+      {{- include "common.registry-pull-secrets" . | indent 6 }}
+{{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -32,26 +40,26 @@ spec:
 {{- end }}
         - name: SPRING_RABBITMQ_HOST
         {{- if .Values.global.rabbitmq.host.value }}
-          value: "{{ .Values.global.rabbitmq.host.value }}"
-        {{ else }}
+          value: {{ .Values.global.rabbitmq.host.value | quote }}
+        {{- else }}
           value: "{{ .Release.Name }}-rabbitmq"
-        {{ end }}
-        - name: SPRING_RABBITMQ_USERNAME
-          value: {{ .Values.global.rabbitmq.username.value }}
-        - name: SPRING_RABBITMQ_HOST
-{{- if .Values.global.rabbitmq.host.value }}
-          value: "{{ .Values.global.rabbitmq.host.value }}"
-{{- else }}
-          value: "{{ .Release.Name }}-rabbitmq"
-{{- end }}
+        {{- end }}
         - name: SPRING_RABBITMQ_USERNAME
           value: {{ .Values.global.rabbitmq.username.value }}
         - name: SPRING_RABBITMQ_PASSWORD
           value: {{ .Values.global.rabbitmq.password.value }}
-{{- if .Values.global.keycloak.url }}
+        {{- if include "common.keycloak-url" $ }}
         - name: ACT_KEYCLOAK_URL
-          value: "{{ .Values.global.keycloak.url }}"
-{{- end }}
+          value: {{ include "common.keycloak-url" $ | quote }}
+        {{- end }}
+        {{- if include "common.keycloak-realm" . }}
+        - name: ACT_KEYCLOAK_REALM
+          value: {{ include "common.keycloak-realm" . | quote }}
+        {{- end }}
+        {{- if include "common.keycloak-resource" . }}
+        - name: ACT_KEYCLOAK_RESOURCE
+          value: {{ include "common.keycloak-resource" . | quote }}
+        {{- end }}
         - name: EUREKA_CLIENT_ENABLED
           value: "false"
         - name: ACTIVITI_CLOUD_SERVICES_METADATA_EUREKA_STATIC_ENABLED
@@ -60,14 +68,12 @@ spec:
           value: "false"
         - name: ACT_CLOUD_CONFIG_SERVER_ENABLED
           value: "false"
-{{- with .Values.extraEnv }}
-{{ tpl . $ | indent 8 }}
-{{- end }}
+{{ include "common.extra-env" . | indent 8 }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.probePath }}
+            path: {{ tpl .Values.probePath . }}
             port: {{ .Values.service.internalPort }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -76,15 +82,27 @@ spec:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.probePath }}
+            path: {{ tpl .Values.probePath . }}
             port: {{ .Values.service.internalPort }}
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}  
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}    
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
+{{- if .Values.extraVolumeMounts }}
+        volumeMounts:
+{{- with .Values.extraVolumeMounts }}
+{{ tpl . $ | indent 10 }}
+{{- end }}
+{{- end }}
+{{- if .Values.extraVolumes }}
+      volumes:
+{{- with .Values.extraVolumes }}
+{{ tpl . $ | indent 8 }}
+{{- end }}
+{{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
 {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.service.name }}

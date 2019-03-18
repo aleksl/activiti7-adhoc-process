@@ -77,7 +77,7 @@
 				<configuration>
 					<images>
 						<image>
-							<alias>activiti7-cc-adhoc-process</alias>
+							<alias>cc-adhoc-process</alias>
 							<name>activiti7-cloud-connector-adhoc-process:${project.version}</name>
 							<build>
 								<dockerFileDir>${project.basedir}</dockerFileDir>
