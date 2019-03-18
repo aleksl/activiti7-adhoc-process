@@ -52,7 +52,7 @@ image:
   tag: 0.0.1
   pullPolicy: IfNotPresent
 service:
-  name: activiti7-cc-adhoc-process
+  name: activiti7-cloud-connector-adhoc-process
   type: ClusterIP
   externalPort: 80
   internalPort: 8080
