@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: local-activiti7-directory-pv
+  name: pv1
   labels:
     type: local
 spec:

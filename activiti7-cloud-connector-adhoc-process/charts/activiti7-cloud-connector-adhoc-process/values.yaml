@@ -42,6 +42,8 @@ image:
   tag: 0.0.1
   pullPolicy: IfNotPresent
 service:
+  service:
+    name: cc-adhoc-process
   type: ClusterIP
   externalPort: 80
   internalPort: 8080
