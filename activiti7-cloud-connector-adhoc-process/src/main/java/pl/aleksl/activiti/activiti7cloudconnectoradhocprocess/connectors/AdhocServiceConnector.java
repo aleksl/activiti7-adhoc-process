@@ -30,11 +30,6 @@ public class AdhocServiceConnector {
     @Autowired
     private ConnectorProperties connectorProperties;
 
-
-    public AdhocServiceConnector(IntegrationResultSender integrationResultSender) {
-        this.integrationResultSender = integrationResultSender;
-    }
-
     @StreamListener(value = AdhocServiceConnectorChannel.ADHOC_SERVICE_CONNECTOR_CHANNEL)
     public void processServiceAdhoc(IntegrationRequest event) throws InterruptedException {
 
@@ -47,5 +42,10 @@ public class AdhocServiceConnector {
                 .buildMessage();
         integrationResultSender.send(message);
     }
+
+    public AdhocServiceConnector(IntegrationResultSender integrationResultSender) {
+        this.integrationResultSender = integrationResultSender;
+    }
+
 
 }
