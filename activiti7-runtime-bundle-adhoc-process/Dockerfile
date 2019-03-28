@@ -4,4 +4,4 @@ ENV PORT 8080
 EXPOSE 8080
 COPY target/*.jar /opt/app.jar
 WORKDIR /opt
-ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+ENTRYPOINT exec java $JAVA_OPTS -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -jar app.jar

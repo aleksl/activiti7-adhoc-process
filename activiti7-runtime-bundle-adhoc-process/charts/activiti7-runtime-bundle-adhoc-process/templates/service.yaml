@@ -25,5 +25,9 @@ spec:
     {{- end }}
     protocol: TCP
     name: http
+  - port: 5005
+    targetPort: 5005
+    protocol: TCP
+    name: debug
   selector:
     app: {{ template "fullname" . }}
