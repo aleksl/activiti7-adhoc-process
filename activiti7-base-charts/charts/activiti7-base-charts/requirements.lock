@@ -17,5 +17,8 @@ dependencies:
 - name: activiti7-runtime-bundle-adhoc-process
   repository: https://aleksl.github.io/activiti7-adhoc-process/
   version: 0.1.0
-digest: sha256:2632826b52ada275847c3e5f640a5f5d187d243ec2446b6131bc497e2a9bb3b3
-generated: 2019-03-18T11:11:40.8384687+01:00
+- name: activiti7-runtime-bundle-requisition-process
+  repository: https://aleksl.github.io/activiti7-adhoc-process/
+  version: 0.1.0
+digest: sha256:4b736980edddf8dadc1d3a0e1c7a979e12641030b29feba7d053856f92c41447
+generated: 2019-03-29T10:48:58.8869404+01:00
