@@ -86,6 +86,14 @@ activiti7-runtime-bundle-adhoc-process:
     name: rb-adhoc-process
   image:
     pullPolicy: IfNotPresent 
+
+activiti7-runtime-bundle-requisition-process:
+  enabled: true
+  service: 
+    name: rb-requisition-process
+  image:
+    pullPolicy: IfNotPresent 
+
 activiti7-cloud-connector-adhoc-process:
   enabled: true
   service: 
