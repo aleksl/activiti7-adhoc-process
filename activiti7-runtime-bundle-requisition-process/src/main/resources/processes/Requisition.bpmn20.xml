@@ -7,10 +7,8 @@
     </sequenceFlow>
     <userTask id="Task_0rmmuh8" name="Requisition" default="SequenceFlow_1jak6iy" activiti:formKey="${formRequisition}" activiti:assignee="${assigneeRequisition}" activiti:candidateUsers="${usersRequisition}" activiti:candidateGroups="${groupsRequisition}" />
     <userTask id="UserTask_1wk3iot" name="Accept2" default="SequenceFlow_1xsjv9z" activiti:formKey="${formAccept2}" activiti:assignee="${assigneeAccept2}" activiti:candidateUsers="${usersAccept2}" activiti:candidateGroups="${groupsAccept2}">
-      <multiInstanceLoopCharacteristics isSequential="true" />
     </userTask>
     <userTask id="UserTask_0jp3ypt" name="Accept3" default="SequenceFlow_0itw9h6" activiti:formKey="${formAccept3}" activiti:assignee="${assigneeAccept3}" activiti:candidateUsers="${usersAccept3}" activiti:candidateGroups="${groupsAccept3}">
-      <multiInstanceLoopCharacteristics isSequential="true" />
     </userTask>
     <exclusiveGateway id="ExclusiveGateway_01briyg" />
     <sequenceFlow id="SequenceFlow_1jak6iy" sourceRef="Task_0rmmuh8" targetRef="ExclusiveGateway_01briyg" />
@@ -100,7 +98,6 @@
       <conditionExpression xsi:type="tFormalExpression">${!ToServiceGetInvoice}</conditionExpression>
     </sequenceFlow>
     <userTask id="UserTask_146e9oo" name="Accept1" default="SequenceFlow_1bo7nhj" activiti:formKey="${formAccept1}" activiti:assignee="${assigneeAccept1}" activiti:candidateUsers="${usersAccept1}" activiti:candidateGroups="${groupsAccept1}">
-      <multiInstanceLoopCharacteristics isSequential="true" />
     </userTask>
     <exclusiveGateway id="ExclusiveGateway_0oflt33" />
     <sequenceFlow id="SequenceFlow_0h63hsy" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_0oflt33" />

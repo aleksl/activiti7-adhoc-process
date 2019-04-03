@@ -81,21 +81,21 @@ activiti-cloud-modeling:
       annotations: {}
 
 activiti7-runtime-bundle-adhoc-process:
-  enabled: true
+  enabled: false
   service: 
     name: rb-adhoc-process
   image:
     pullPolicy: IfNotPresent 
 
 activiti7-runtime-bundle-requisition-process:
-  enabled: false
+  enabled: true
   service: 
     name: rb-requisition-process
   image:
     pullPolicy: IfNotPresent 
 
 activiti7-cloud-connector-adhoc-process:
-  enabled: true
+  enabled: false
   service: 
     name: cc-adhoc-process
   image:

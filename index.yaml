@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   activiti7-cloud-connector-adhoc-process:
   - apiVersion: v1
-    created: 2019-03-29T11:02:23.3090262+01:00
+    created: 2019-04-03T11:49:59.0337189+02:00
     description: A Helm chart for Activiti Cloud Connector
-    digest: 77dbb77d57e71a36fa9d5153d17337de87566e35ea3447374fcd022730f0237d
+    digest: 34ba99a31fa79aff2b7dbfe8d31c9ea00719b096b4d01b9ed0dbe0297622d838
     icon: https://salaboy.files.wordpress.com/2018/01/acitiviti_icon_fullcolor_github_400x400.png
     name: activiti7-cloud-connector-adhoc-process
     urls:
@@ -12,9 +12,9 @@ entries:
     version: 0.1.0
   activiti7-runtime-bundle-adhoc-process:
   - apiVersion: v1
-    created: 2019-03-29T11:02:23.3110264+01:00
+    created: 2019-04-03T11:49:59.0347197+02:00
     description: A Helm chart for Activiti Cloud Runtime Bundle Example
-    digest: d78ecab30ab8c2a064d63f3125405390f5d1f00364e8e77e9dd8cefc1a480070
+    digest: 82493471aa950173e514f18f3403f5b302ceeae1a796fc735f16feef5009170c
     icon: https://salaboy.files.wordpress.com/2018/01/acitiviti_icon_fullcolor_github_400x400.png
     name: activiti7-runtime-bundle-adhoc-process
     urls:
@@ -22,12 +22,12 @@ entries:
     version: 0.1.0
   activiti7-runtime-bundle-requisition-process:
   - apiVersion: v1
-    created: 2019-03-29T11:02:23.3120335+01:00
+    created: 2019-04-03T11:49:59.0357204+02:00
     description: A Helm chart for Activiti Cloud Runtime Bundle Example
-    digest: 38dfcf628f700613962327c26ea5cdd6e1dc5d868871ceabdcb9a7639aafacd5
+    digest: 9374b83ced13cde83cc6a30faa0c180f2dba4ef07c1410bcd69e4f9324ea173f
     icon: https://salaboy.files.wordpress.com/2018/01/acitiviti_icon_fullcolor_github_400x400.png
     name: activiti7-runtime-bundle-requisition-process
     urls:
     - https://aleksl.github.io/activiti7-adhoc-process/activiti7-runtime-bundle-requisition-process/activiti7-runtime-bundle-requisition-process-0.1.0.tgz
     version: 0.1.0
-generated: 2019-03-29T11:02:23.269502+01:00
+generated: 2019-04-03T11:49:59.03272+02:00
